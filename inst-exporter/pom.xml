@@ -12,11 +12,40 @@
     <artifactId>inst-exporter</artifactId>
     <packaging>jar</packaging>
 
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>export the Instrumentation instance.</description>
+    <url>https://github.com/jvmbytes/agent</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>wongoo</name>
+            <email>wongoo@apache.org</email>
+            <organization>jvmbytes</organization>
+            <organizationUrl>http://jvmbytes.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/jvmbytes/agent.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jvmbytes/agent.git</developerConnection>
+        <url>http://github.com/jvmbytes/agent/tree/master</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
