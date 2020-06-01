@@ -1,7 +1,7 @@
 ## jvmbytes Inst Demo
 
 ```bash
-git clone http://github.com/jvmbytes/inst-agent.git
+git clone http://github.com/jvmbytes/agent.git
 
 cd agent && mvn clean package
 
