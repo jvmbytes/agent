@@ -5,14 +5,14 @@
     <parent>
         <artifactId>agent</artifactId>
         <groupId>com.jvmbytes.agent</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>inst-agent</artifactId>
     <packaging>jar</packaging>
 
-    <name>${project.groupId}:${project.artifactId}</name>
+    <name>com.jvmbytes.agent:${project.artifactId}</name>
     <description>java agent to export the Instrumentation instance.</description>
     <url>https://github.com/jvmbytes/agent</url>
 
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.jvmbytes.agent</groupId>
             <artifactId>inst-exporter</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

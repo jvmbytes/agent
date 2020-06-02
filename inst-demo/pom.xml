@@ -5,20 +5,20 @@
     <parent>
         <artifactId>agent</artifactId>
         <groupId>com.jvmbytes.agent</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>inst-demo</artifactId>
     <packaging>jar</packaging>
 
-    <name>${project.groupId}:${project.artifactId}</name>
+    <name>com.jvmbytes.agent:${project.artifactId}</name>
 
     <dependencies>
         <dependency>
             <groupId>com.jvmbytes.agent</groupId>
             <artifactId>inst-loader</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

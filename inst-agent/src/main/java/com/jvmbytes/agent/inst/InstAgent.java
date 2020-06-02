@@ -35,35 +35,9 @@ public final class InstAgent {
 
     private static void exportInst(String feature, Instrumentation inst) {
         try {
-            File jar = File.createTempFile("jvmbytes-inst-exporter", ".jar");
-            jar.delete();
-
-            String tempExporterJarPath = jar.getParent() + EXPORTER_JAR;
-
-            jar = new File(tempExporterJarPath);
-
-            if (!jar.exists()) {
-                InputStream is = InstAgent.class.getResourceAsStream(EXPORTER_JAR);
-                if (is == null) {
-                    throw new RuntimeException("can't find " + EXPORTER_JAR);
-                }
-                FileOutputStream os = new FileOutputStream(tempExporterJarPath + ".temp");
-                byte[] bytes = new byte[1024];
-                int n = 0;
-                while ((n = is.read(bytes)) > 0) {
-                    os.write(bytes, 0, n);
-                }
-                os.close();
-                is.close();
-
-                new File(tempExporterJarPath + ".temp").renameTo(jar);
-            }
-
-            JarFile jarFile = new JarFile(jar);
-            inst.appendToBootstrapClassLoaderSearch(jarFile);
+            inst.appendToBootstrapClassLoaderSearch(new JarFile(loadExporterJar()));
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("can't export Instrumentation, " + e.getClass().getName() + ":" + e.getMessage());
+            throw new RuntimeException("can't export Instrumentation", e);
         }
 
         try {
@@ -77,11 +51,51 @@ public final class InstAgent {
             method = clazz.getMethod("storeInst", Instrumentation.class);
             method.invoke(null, inst);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("can't store Instrumentation, " + e.getClass().getName() + ":" + e.getMessage());
+            throw new RuntimeException("can't store Instrumentation", e);
         }
 
         System.out.println("jvmbytes inst agent loaded");
+    }
+
+    private static File loadExporterJar() throws Exception {
+        File tempJar = File.createTempFile("jvmbytes-inst-exporter", ".jar");
+        String exporterJarPath = tempJar.getParent() + EXPORTER_JAR;
+        File exporterJar = new File(exporterJarPath);
+        try {
+            if (exporterJar.exists()) {
+                tempJar.delete();
+            } else {
+                InputStream is = InstAgent.class.getResourceAsStream(EXPORTER_JAR);
+                if (is == null) {
+                    throw new RuntimeException("can't find " + EXPORTER_JAR);
+                }
+                FileOutputStream os = new FileOutputStream(tempJar);
+                byte[] bytes = new byte[1024];
+                int n = 0;
+                while ((n = is.read(bytes)) > 0) {
+                    os.write(bytes, 0, n);
+                }
+                os.close();
+                is.close();
+
+                tempJar.renameTo(exporterJar);
+            }
+        } catch (Exception e) {
+            try {
+                // make sure temp jar being deleted
+                tempJar.delete();
+            } catch (Exception ex) {
+            }
+
+            // check again
+            if (exporterJar.exists()) {
+                return exporterJar;
+            }
+
+            throw e;
+        }
+
+        return exporterJar;
     }
 
     public static void premain(String feature, Instrumentation inst) {
